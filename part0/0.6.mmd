@@ -1,12 +1,11 @@
 ---
-title: Exercise 0.5
+title: Exercise 0.6
 config:
-  theme: dark
+    theme: dark
 ---
 
-%% Create a diagram depicting the situation where the user 
-%% goes to the single-page app version of the notes app at 
-%% https://studies.cs.helsinki.fi/exampleapp/spa.
+%% Create a diagram depicting the situation where the user creates 
+%% a new note using the single-page version of the app..
 
 sequenceDiagram
     participant B as Browser
@@ -26,3 +25,11 @@ sequenceDiagram
    B->>+S: GET https://studies.cs.helsinki.fi/exampleapp/data.json
    S->>-B: [ { content: "april fools", date: "2026-04-01" }, ... ]
    note right of B: Browser executes js to display notes
+
+   U->>+B: User enters a note and clicks "save"
+   B->>-U: Browser executes js to show new note created
+   note right of B: Browser executes js code to send note to Server
+
+   B->>+S: POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa
+   S->>-B: Server sends a response of "note created"
+
