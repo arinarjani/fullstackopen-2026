@@ -1,0 +1,22 @@
+%% Create a diagram depicting the situation where the user 
+%% goes to the single-page app version of the notes app at 
+%% https://studies.cs.helsinki.fi/exampleapp/spa.
+
+sequenceDiagram
+    participant B as Browser
+    participant S as Server
+    participant U as User
+
+    B->>+S: GET https://studies.cs.helsinki.fi/exampleapp/spa
+    S->>-B: html file
+
+    B->>+S: GET https://studies.cs.helsinki.fi/exampleapp/main.css
+    S->>-B: css file
+
+    B->>+S: GET https://studies.cs.helsinki.fi/exampleapp/spa.js
+    S->>-B: js file
+    note right of B: Browser js executes to get json data from Server
+
+   B->>+S: GET https://studies.cs.helsinki.fi/exampleapp/data.json
+   S->>-B: [ { content: "april fools", date: "2026-04-01" }, ... ]
+   note right of B: Browser executes js to display notes
