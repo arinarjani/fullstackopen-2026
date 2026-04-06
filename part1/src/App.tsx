@@ -1,22 +1,52 @@
-const Hello = ( {name, age} ) => {
+const Header = ( { course } ) => {
   return (
     <>
-      <p>hello {name} are you {age}</p>
+      <h1>{course}</h1>
     </>
   )
 }
 
-function App() {
-  const name = 'eric'
-  const age = 25
-
+const Content = ( { part, exercise }) => {
   return (
     <>
-      <p>hello world</p>
-      <Hello name={'arin'} age={24} />
-      <Hello name={'aiden'} age={36} />
-      <Hello name={name} age={age} />
+      <Part part={part} exercise={exercise} />
     </>
+  )
+}
+
+const Part = ( { part, exercise } ) => {
+  return (
+    <>  
+      <p>{part} {exercise}</p>
+    </>
+  )
+}
+
+const Total = ( { totalExercises } ) => {
+  return (
+    <>
+      <p>Number of exercises: {totalExercises}</p>
+    </>
+  )
+}
+
+const App = () => {
+  const course = 'Half Stack application development'
+  const part1 = 'Fundamentals of React'
+  const exercises1 = 10
+  const part2 = 'Using props to pass data'
+  const exercises2 = 7
+  const part3 = 'State of a component'
+  const exercises3 = 14
+
+  return (
+    <div>
+      <Header course={course} />  
+      <Content part={part1} exercise={exercises1} />
+      <Content part={part2} exercise={exercises2} />
+      <Content part={part3} exercise={exercises3} />  
+      <Total totalExercises={exercises1 + exercises2 + exercises3} />
+    </div>
   )
 }
 
