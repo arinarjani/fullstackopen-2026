@@ -2,9 +2,6 @@ import { useState } from "react"
 
 const StatisticLine  = ( { text, value = 0 } ) => {
   return (
-    // <div>
-    //   {`${text}: ${value}`}
-    // </div>
     <table>
       <tbody>
         <tr>
@@ -95,6 +92,7 @@ function App() {
       </div>
       <p>{anecdotes[selected]}</p>
       <h2>Mote Voted Anecdote</h2>
+      {/* this finds the highest number in votes, then get that index, then passes that index to anecdotes[indexFound] to display the most liked anecdote */}
       <p>{ votes.reduce((a,b) => Math.max(a,b), 0) > 0 ? anecdotes[ votes.indexOf( votes.reduce((a,b) => Math.max(a,b), 0) ) ] : 'please vote' }</p>
     </>
   )
