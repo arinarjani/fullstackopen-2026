@@ -55,6 +55,9 @@ function App() {
     setTotal(t => t + 1)
   }
 
+  console.log();
+  
+
   const handleAnectdoteVote = () => {
     // use map to loop over the array and once found the index of the selected anecdote, increase by one, then update votes state
     setVotes(votes.map( (elem, index) => index === selected ? elem + 1 : elem ))
@@ -87,7 +90,7 @@ function App() {
       }
       <h2>Anecdotes</h2>
       <div>
-        <Button text={'random number'} handleClick={handleRandomButton} />
+        <Button text={'random anecdote'} handleClick={handleRandomButton} />
         <Button text="vote" handleClick={handleAnectdoteVote} />
       </div>
       <p>{anecdotes[selected]}</p>
