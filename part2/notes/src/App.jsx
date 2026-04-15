@@ -1,26 +1,51 @@
 import Note from "./components/Note.jsx"
+import { useState, useEffect } from "react"
+import noteService from './services/notes.js'
 
-import { useState } from "react"
+const { getAll, create, update } = noteService;
 
-function App( props ) {
-  const [notes, setNotes] = useState(props.notes)
+function App() {
+  const [notes, setNotes] = useState([])
   const [newNote, setNewNotes] = useState('')
   const [showAll, setShowAll] = useState(true)
+
+  useEffect(() => {
+    getAll()
+         .then(initialNotes => {
+            setNotes(initialNotes)
+         })
+  }, [])
 
   const handleAddNote = (e) => {
     e.preventDefault();
     const createdNote = {
-      id: String(notes.length + 1),
       content: newNote,
       important: Math.round(Math.random()) === 1 ? true : false
     }
 
-    setNotes(notes.concat(createdNote))
-    setNewNotes('')
+    create(createdNote)
+         .then(returnedNote => {
+            setNotes(notes.concat(returnedNote))
+            setNewNotes('')
+         })
   }
 
   const handeNoteChange = (e) => {
     setNewNotes(e.target.value)
+  }
+
+  const toggleImportance = ( id ) => {
+    const note = notes.find(n => n.id === id)
+    const changedNote = {...note, important: !note.important}
+
+    update(id, changedNote)
+         .then(returnedNote => {
+          setNotes(notes.map(note => note.id === id ? returnedNote : note))
+         })
+         .catch(err => {
+            alert(`the note "${note.content}" was already deleted from the server`)
+            setNotes(notes.filter(note => note.id !== id))
+         })
   }
 
   // show all notes, or show only notes whose important value is true
@@ -34,7 +59,7 @@ function App( props ) {
       </button>
       <ul>
         {
-          notesToShow.map(note => <Note key={note.id} note={note} />)
+          notesToShow.map(note => <Note key={note.id} note={note} toggleImportance={() => toggleImportance(note.id)} />)
         }
       </ul>
       <form onSubmit={handleAddNote}>

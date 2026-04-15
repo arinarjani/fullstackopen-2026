@@ -82,4 +82,9 @@ button {
   padding: 5px;
 }
 
+p > button {
+  margin-left: 20px;
+  width: max-content;
+}
+
 
