@@ -87,4 +87,19 @@ p > button {
   width: max-content;
 }
 
+.notification {
+  width: 100%;
+  font-weight: 700;
+}
 
+.green {
+  color: green;
+  border: 2px solid green;
+  border-radius: 5px;
+}
+
+.red {
+  color: red;
+  border: 2px solid red;
+  border-radius: 5px;
+}

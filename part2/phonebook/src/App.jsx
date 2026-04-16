@@ -1,6 +1,7 @@
 import Person from './components/Person.jsx'
 import PersonForm from './components/PersonForm.jsx'
 import Search from './components/Search.jsx'
+import Notification from './components/Notification.jsx'
 import { useState, useEffect } from 'react'
 import { add, getAll, erase, update } from './services/phonebook.js'
 
@@ -10,6 +11,7 @@ const App = () => {
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     getAll().then(response => setPersons(response))
@@ -23,14 +25,20 @@ const App = () => {
     if (!foundOrNot) {
       add({
         name: newName, number: newNumber
-      }).then(addedPerson => setPersons(persons.concat(addedPerson)))
+      }).then(addedPerson => {
+        setPersons(persons.concat(addedPerson))
+        setNotification(`added ${addedPerson.name}`)
+        setTimeout(() => setNotification(null), 3000)
+      })
     } else if (confirm(`${newName} is already in the phonebook, would you like to update the phone number?`)) {
       // create a copy of found person with a new phone number
       const updatedNumber = {...foundOrNot, number: newNumber}
       // update db to reflect that changes
-      update(updatedNumber).then(response => {
+      update(updatedNumber).then(updatedPerson => {
         // update state in App to reflect changes
-        setPersons(persons.map(p => p.id === response.id ? response : p))
+        setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p))
+        setNotification(`updated ${updatedPerson.name}`)
+        setTimeout(() => setNotification(null), 3000)
       })
     } else {
       console.log('nothing was updated')
@@ -56,6 +64,14 @@ const App = () => {
     confirm(`Are you sure you want to delete "${persons.find(p => p.id === id).name}"`) ? 
     erase(id).then(deletedPerson => {
       setPersons(persons.filter(person => person.id !== deletedPerson.id))
+      setNotification(`deleted ${deletedPerson.name}`)
+      setTimeout(() => setNotification(null), 3000)
+    }).catch(err => {
+      console.log('errrrrrrrrrrr: ', err)
+      const deletedPerson = persons.find(p => p.id === id)
+      setPersons(persons.filter(p => p.id !== deletedPerson.id))
+      setNotification(`${deletedPerson.name} has already been deleted`)
+      setTimeout(() => setNotification(null), 3000)
     }) : 
     console.log('no one deleted')
   }
@@ -63,6 +79,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notification} />
       <Search search={search} handleSearch={handleSearch} />
       <PersonForm 
         name={newName} 

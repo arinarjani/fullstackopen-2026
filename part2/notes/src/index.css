@@ -47,3 +47,13 @@ button:hover {
   border: 1px solid yellowgreen;
   transition: 0.2s;
 }
+
+.error {
+  color: red;
+  background: lightgrey;
+  font-size: 20px;
+  border-style: solid;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
