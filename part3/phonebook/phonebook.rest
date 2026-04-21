@@ -1,0 +1,28 @@
+GET http://localhost:3001/api/persons
+
+###
+
+GET http://localhost:3001/api/persons/asdf
+
+###
+
+DELETE http://localhost:3001/api/persons/3 HTTP/1.1
+
+###
+
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "aab",
+    "number": "111-111-1111"
+}
+
+###
+
+POST http://localhost:3001/api/persons HTTP/1.1
+Content-Type: application/json
+
+{
+    "blah": "blah, blah, blah"
+}
