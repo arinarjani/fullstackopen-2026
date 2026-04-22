@@ -1,7 +1,7 @@
 # [App Link](https://phonebook-uo9h.onrender.com)
 
 # Tools Used:
-1. [vite](https://vite.dev/)
+1. [Vite](https://vite.dev/)
 2. [NodeJS](https://nodejs.org/en)
 3. [Express.JS](https://expressjs.com/)
 4. [Render](https://render.com/)
