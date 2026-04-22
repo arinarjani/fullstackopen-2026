@@ -64,7 +64,7 @@ app.post('/api/notes', (req, res) => {
     // notes = notes.concat(newNote)
     notes = notes.concat(note)
     // send back the newly added note
-    res.json(notes)
+    res.json(note)
   } else {
     res.status(400).json({ error: 'content missing' })
   }
