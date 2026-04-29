@@ -63,6 +63,7 @@ const App = () => {
   const deleteBtn = (id) => {
     confirm(`Are you sure you want to delete "${persons.find(p => p.id === id).name}"`) ? 
     erase(id).then(deletedPerson => {
+      console.log('font-end deletedPerson -', deletedPerson)
       setPersons(persons.filter(person => person.id !== deletedPerson.id))
       setNotification(`deleted ${deletedPerson.name}`)
       setTimeout(() => setNotification(null), 3000)

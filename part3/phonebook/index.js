@@ -100,8 +100,11 @@ app.delete('/api/persons/:id', async (req, res, next) => {
 
     // delete person and if error, handle it
     try {
-        await Phonebook.findByIdAndDelete(id)
-        res.status(204).end()
+        const deletedPerson = await Phonebook.findByIdAndDelete(id)
+
+        console.log('deletedPerson -', deletedPerson)
+
+        res.status(200).json(deletedPerson)
     } catch (error) {
         next(error)
     }
