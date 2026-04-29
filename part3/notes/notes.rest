@@ -1,0 +1,43 @@
+GET http://localhost:3001/api/notes
+
+###
+
+POST http://localhost:3001/api/notes http/1.1
+Content-Type: application/json
+
+{
+    "content": "I cannot wait to finish this course for the 2nd time hehe haha hoho",
+    "important": true
+}
+
+###
+
+GET http://localhost:3001/api/notes
+
+###
+
+GET http://localhost:3001/api/notes/69f220d73d19c12b3221f888
+
+###
+
+DELETE http://localhost:3001/api/notes/123456789123456789123456
+
+###
+
+PUT http://localhost:3001/api/notes/69f1409b390c56fba78e7bfe
+Content-Type: application/json
+
+{
+    "content": "I cannot wait to finish this course for the 2nd time hehe haha hoho",
+    "important": true
+}
+
+###
+
+PUT http://localhost:3001/api/notes/69f1409b390c56fba78e7bfe
+Content-Type: application/json
+
+{
+    "content": "I cannot wait to mess with the new course",
+    "important": false
+}

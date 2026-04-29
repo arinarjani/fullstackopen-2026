@@ -2,11 +2,11 @@ GET http://localhost:3001/api/persons
 
 ###
 
-GET http://localhost:3001/api/persons/asdf
+GET http://localhost:3001/api/persons/69f271c1139401e42080599e
 
 ###
 
-DELETE http://localhost:3001/api/persons/3 HTTP/1.1
+DELETE http://localhost:3001/api/persons/69f268326af85b7fd6a2ee HTTP/1.1
 
 ###
 
@@ -26,3 +26,17 @@ Content-Type: application/json
 {
     "blah": "blah, blah, blah"
 }
+
+###
+
+PUT http://localhost:3001/api/persons/69f271c1139401e42080599e HTTP/1.1
+Content-Type: application/json
+
+{
+    "name": "terry",
+    "number": "111-111-1111"
+}
+
+###
+
+GET http://localhost:3001/info

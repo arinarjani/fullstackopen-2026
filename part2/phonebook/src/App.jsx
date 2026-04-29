@@ -20,9 +20,9 @@ const App = () => {
   const handlePhonebookSubmit = (e) => {
     e.preventDefault()
 
-    const foundOrNot = persons.find( ({name}) => name.toLowerCase() === newName.toLowerCase() )
+    const found = persons.find( ({name}) => name.toLowerCase() === newName.toLowerCase() )
 
-    if (!foundOrNot) {
+    if (!found) {
       add({
         name: newName, number: newNumber
       }).then(addedPerson => {
@@ -32,7 +32,7 @@ const App = () => {
       })
     } else if (confirm(`${newName} is already in the phonebook, would you like to update the phone number?`)) {
       // create a copy of found person with a new phone number
-      const updatedNumber = {...foundOrNot, number: newNumber}
+      const updatedNumber = {...found, number: newNumber}
       // update db to reflect that changes
       update(updatedNumber).then(updatedPerson => {
         // update state in App to reflect changes
