@@ -1,7 +1,7 @@
-//const db_connent_link = `mongodb+srv://arin:x'>45Ff]7NP=KN.@udemy-web-dev-yelpcamp.zztje.mongodb.net/?appName=udemy-web-dev-yelpcamp`
+//const db_connent_link = `mongodb+srv://arin:<insert_password>@udemy-web-dev-yelpcamp.zztje.mongodb.net/?appName=udemy-web-dev-yelpcamp`
 
 // const mongoose = require('mongoose');
-// const uri = "mongodb+srv://arin:arin@udemy-web-dev-yelpcamp.zztje.mongodb.net/?appName=udemy-web-dev-yelpcamp"
+// const uri = "mongodb+srv://arin:<insert_password>@udemy-web-dev-yelpcamp.zztje.mongodb.net/?appName=udemy-web-dev-yelpcamp"
 
 // const clientOptions = { serverApi: { version: '1', strict: true, deprecationErrors: true } };
 
@@ -22,7 +22,7 @@
 
 
 const mongoose = require('mongoose')
-const uri = "mongodb+srv://arin:arin@udemy-web-dev-yelpcamp.zztje.mongodb.net/noteApp?appName=udemy-web-dev-yelpcamp"
+const uri = "mongodb+srv://arin:<insert_password>@udemy-web-dev-yelpcamp.zztje.mongodb.net/noteApp?appName=udemy-web-dev-yelpcamp"
 
 async function main() {
     await mongoose.connect(uri)
