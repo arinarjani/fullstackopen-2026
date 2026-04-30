@@ -26,18 +26,45 @@ const App = () => {
       add({
         name: newName, number: newNumber
       }).then(addedPerson => {
+        // if there is an error sent back, move to the catch block
+        // I tried do do this in ./services/phonebook, but 
+        // if I write, 'return res.status(400).send({ error: error.name })'
+        // in ../../part3/phonebook/index.js, I get the json back, and that
+        // gets added to the persons state. If I don't have the
+        // custom error middleware, then I get an error in axios
+        // which can be handled accordingly, but the course wants us to use
+        // a custom error middleware, at least it did for the notes app
+        if (addedPerson.name === 'ValidationError') {
+          throw new Error(addedPerson.message)
+        }
+
         setPersons(persons.concat(addedPerson))
         setNotification(`added ${addedPerson.name}`)
+        setTimeout(() => setNotification(null), 3000)
+      }).catch(error => {
+        console.log(error)
+
+        setNotification(`${error}`)
         setTimeout(() => setNotification(null), 3000)
       })
     } else if (confirm(`${newName} is already in the phonebook, would you like to update the phone number?`)) {
       // create a copy of found person with a new phone number
       const updatedNumber = {...found, number: newNumber}
+
       // update db to reflect that changes
       update(updatedNumber).then(updatedPerson => {
+        
+        // see lines 29 - 36
+        if (updatedPerson.name === 'ValidationError') {
+          throw new Error(updatedPerson.message)
+        }
+
         // update state in App to reflect changes
         setPersons(persons.map(p => p.id === updatedPerson.id ? updatedPerson : p))
         setNotification(`updated ${updatedPerson.name}`)
+        setTimeout(() => setNotification(null), 3000)
+      }).catch(error => {
+        setNotification(`${error}`)
         setTimeout(() => setNotification(null), 3000)
       })
     } else {

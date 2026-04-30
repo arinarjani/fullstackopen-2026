@@ -62,7 +62,7 @@ app.get('/api/persons/:id', async (req, res, next) => {
 app.delete('/api/persons/:id', async (req, res, next) => {
 
     // get the id from req.params
-    const {id} = req.params
+    const { id } = req.params
 
     // delete person and if error, handle it
     try {
@@ -77,7 +77,7 @@ app.delete('/api/persons/:id', async (req, res, next) => {
 })
 
 app.post('/api/persons', async (req, res, next) => {
-    const {name, number} = req.body
+    const { name, number } = req.body
 
     try {
         const addedContact = await Phonebook.create({
@@ -106,8 +106,8 @@ app.post('/api/persons', async (req, res, next) => {
 
 app.put('/api/persons/:id', async (req, res, next) => {
     // get the id and body contents
-    const {id} = req.params
-    const {name, number} = req.body
+    const { id } = req.params
+    const { name, number } = req.body
 
     // findbyId the person in the phonebook to update
     try {
@@ -128,7 +128,7 @@ app.put('/api/persons/:id', async (req, res, next) => {
 // error middleware
 app.use((error, req, res, next) => {
     if (error.name === 'CastError') {
-        return res.status(400).send({error: 'malformed id'})
+        return res.status(400).send({ error: 'malformed id' })
     }
 
     if (error.name === 'ValidationError') {
@@ -143,6 +143,7 @@ app.use((req,res) => {
         error: 'unknown endpoint'
     })
 })
+
 
 app.listen(port, () => {
     console.log(`server is running on port ${port}`)

@@ -12,7 +12,11 @@ async function main() {
 main().catch(err => console.log('error happened during connection:', err))
 
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minLength: 5,
+    required: true
+  },
   important: Boolean,
 })
 

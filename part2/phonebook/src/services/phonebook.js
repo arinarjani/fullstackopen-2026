@@ -7,7 +7,11 @@ const getAll = () => {
 }
 
 const add = (person) => {
-    return axios.post(url, person).then(response => response.data)
+    return axios.post(url, person)
+                .then(response => response.data)
+                .catch(error => {
+                    return error.response.data
+                })
 }
 
 const erase = (id) => {
@@ -15,7 +19,11 @@ const erase = (id) => {
 }
 
 const update = (updatedPerson) => {
-    return axios.put(`${url}/${updatedPerson.id}`, updatedPerson).then(response => response.data)
+    return axios.put(`${url}/${updatedPerson.id}`, updatedPerson)
+                .then(response => response.data)
+                .catch(error => {
+                    return error.response.data
+                })
 }
 
 export { add, getAll, erase, update }
