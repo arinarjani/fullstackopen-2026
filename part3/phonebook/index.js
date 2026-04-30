@@ -13,29 +13,6 @@ app.use(morgan(':method :url :status :http-version - :response-time ms :body'))
 
 const port = 3001
 
-// let phonebook = [
-//     { 
-//         "id": "1",
-//         "name": "Arto Hellas", 
-//         "number": "040-123456"
-//     },
-//     { 
-//         "id": "2",
-//         "name": "Ada Lovelace", 
-//         "number": "39-44-5323523"
-//     },
-//     { 
-//         "id": "3",
-//       "name": "Dan Abramov", 
-//       "number": "12-43-234345"
-//     },
-//     { 
-//         "id": "4",
-//         "name": "Mary Poppendieck", 
-//         "number": "39-23-6423122"
-//     }
-// ]
-
 // const requestLogger = (request, response, next) => {
 //     console.log('Method:', request.method)
 //     console.log('Path:  ', request.path)
@@ -59,12 +36,9 @@ app.get('/api/persons', async (req, res) => {
     const allPersons = await Phonebook.find({})
 
     res.json(allPersons)
-
-    // res.json(phonebook)
 })
 
 app.get('/info', async (req,res, next) => {
-    // res.send(`Phonebook has info for ${phonebook.length} people. ${Date()}`)
 
     try {
         const allContacts = await Phonebook.find({})
@@ -76,13 +50,6 @@ app.get('/info', async (req,res, next) => {
 })
 
 app.get('/api/persons/:id', async (req, res, next) => {
-    // const person = phonebook.find(p => p.id === req.params.id)
-
-    // if (person) {
-    //     res.json(person)
-    // } else {
-    //     res.status(404).json({error: 'no person found with that id'})
-    // }
 
     try {
         const foundPerson = await Phonebook.findById(req.params.id)
@@ -93,7 +60,6 @@ app.get('/api/persons/:id', async (req, res, next) => {
 })
 
 app.delete('/api/persons/:id', async (req, res, next) => {
-    // const person = phonebook.find(p => p.id === req.params.id)
 
     // get the id from req.params
     const {id} = req.params
@@ -108,51 +74,33 @@ app.delete('/api/persons/:id', async (req, res, next) => {
     } catch (error) {
         next(error)
     }
-
-    // if (person) {
-    //     // delete person found by returning phonebook filtered w/o person
-    //     phonebook = phonebook.filter(p => p.id !== req.params.id)
-    //     res.status(204).end()
-    // } else {
-    //     // respond with person already delete or not found
-    //     res.status(404).json({error: 'person not found or already deleted. try agin'})
-    // }
 })
 
-app.post('/api/persons', async (req, res) => {
+app.post('/api/persons', async (req, res, next) => {
     const {name, number} = req.body
 
-    // check if name and number are submitted
-    if (name && number) {
-        // create phonebook entry
-        const newContact = await Phonebook.create({
-            name,
-            number
+    try {
+        const addedContact = await Phonebook.create({
+            name, number
         })
-
-        res.status(201).json(newContact)
-
-        // // check if name is already in the phonebook
-        // const duplicateName = phonebook.find(p => p.name.toLowerCase() === name.toLowerCase()) 
-        
-        // if (duplicateName) {
-        //     // if dupliacte name exists, set status to 400, and send back an error message
-        //     res.status(400).json({error: 'name already exists in phonebook. name must be unique'})
-        // } else {
-        //     const person = {
-        //         name,
-        //         number,
-        //         id: Math.round(Math.random() * 100), 
-        //     }
-        
-        //     phonebook = phonebook.concat(person)
-        
-        //     res.status(201).json(phonebook)
-        // }
-    } else {
-        // if all checks fail, set status to 400, and send back an error message
-        res.status(400).json({error: 'name and number must be included'})
+        res.json(addedContact)
+    } catch (error) {
+        next(error)
     }
+
+    // // check if name and number are submitted
+    // if (name && number) {
+    //     // create phonebook entry
+    //     const newContact = await Phonebook.create({
+    //         name,
+    //         number
+    //     })
+
+    //     res.status(201).json(newContact)
+    // } else {
+    //     // if all checks fail, set status to 400, and send back an error message
+    //     res.status(400).json({error: 'name and number must be included'})
+    // }
 
 })
 
@@ -180,7 +128,11 @@ app.put('/api/persons/:id', async (req, res, next) => {
 // error middleware
 app.use((error, req, res, next) => {
     if (error.name === 'CastError') {
-        return res.json({error: 'malformed id'})
+        return res.status(400).send({error: 'malformed id'})
+    }
+
+    if (error.name === 'ValidationError') {
+        return res.status(400).send({ name: error.name, message: error.message })
     }
 
     next(error)
