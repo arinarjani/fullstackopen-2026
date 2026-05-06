@@ -37,8 +37,7 @@ notesRouter.post('/', async (req, res, next) => {
     // add the note to the db
     try {
       const savedNote = await Note.create(note)
-      res.json(savedNote)
-      console.log('note has been saved')
+      res.status(201).json(savedNote)
     } catch (error) {
       next(error)
     }
@@ -51,6 +50,7 @@ notesRouter.delete('/:id', async (req, res, next) => {
   // find the note by id and delete it
   try {
     const deletedNote = await Note.findByIdAndDelete(id)
+    res.status(204).end()
   } catch(err) {
     next(err)
   }

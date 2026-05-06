@@ -89,11 +89,11 @@ describe('exercise 4.6: return the blog where the author has the most blogs', ()
         { author: 'hhh', blogs: 11 }
     ]
     test('blog with most likes: 5, 1, 14, 12, 1, 33, 32, 11 respectively', () => {
-        assert.deepStrictEqual(mostBlogs(blogs), { author: 'fff', blogs: 33 })
+        assert.deepStrictEqual(mostBlogs(b), { author: 'fff', blogs: 33 })
     })
 })
 
-describe('exercise 4.6: return the blog where the author has the most blogs', () => {
+describe('exercise 4.7: return the blog where the author has the most likes', () => {
     const b =  [
         { author: 'aaa', blogs: 5, likes: 2 },
         { author: 'bbb', blogs: 1, likes: 1 },
@@ -106,6 +106,6 @@ describe('exercise 4.6: return the blog where the author has the most blogs', ()
     ]
 
     test('blog with most likes: 2, 1, 1, 1, 1, 1, 1, 1 respectively', () => {
-        assert.deepStrictEqual(mostLikes(blogs), { author: 'aaa', blogs: 5, likes: 2 })
+        assert.deepStrictEqual(mostLikes(b), { author: 'aaa', blogs: 5, likes: 2 })
     })
 })

@@ -46,16 +46,9 @@ const mostBlogs = (blogs_array) => {
     //     { author: 'hhh', blogs: 11 }
     // ]
 
-    const indexOfMostBlogs = blogs_array.reduce((accum, current, index) => {
-        let value = 0;
-
-        if (current.blogs > accum) { 
-            accum = current.likes 
-            value = index 
-        }
-
-        return index
-    }, 0)
+    const indexOfMostBlogs = blogs_array.reduce((maxIdx, currentItem, currentIdx, array) => {
+        return currentItem.blogs > array[maxIdx].blogs ? currentIdx : maxIdx;
+    }, 0);
 
     return blogs_array[indexOfMostBlogs]
 }
@@ -72,16 +65,9 @@ const mostLikes = (blogs_array) => {
     //     { author: 'hhh', blogs: 11, likes: 1 }
     // ]
 
-    const indexOfMostLiked = blogs_array.reduce((accum, current, index) => {
-        let value = 0;
-
-        if (current.blogs > accum) { 
-            accum = current.likes 
-            value = index 
-        }
-
-        return index
-    }, 0)
+    const indexOfMostLiked = blogs_array.reduce((maxIdx, currentItem, currentIdx, array) => {
+  return currentItem.likes > array[maxIdx].likes ? currentIdx : maxIdx;
+}, 0);
 
     return blogs_array[indexOfMostLiked]
 }
