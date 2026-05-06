@@ -1,12 +1,13 @@
 const mongoose = require('mongoose')
+const { MONGODB_URI } = require('../utils/config.js')
 
 mongoose.set('strictQuery', false)
 
-const url = process.env.MONGODB_URI
+// const url = process.env.MONGODB_URI
 
-console.log('connecting to', url)
+console.log('connecting to', MONGODB_URI)
 async function main() {
-    await mongoose.connect(url)
+    await mongoose.connect(MONGODB_URI)
     console.log('connection opened')
 }
 main().catch(err => console.log('error happened during connection:', err))
