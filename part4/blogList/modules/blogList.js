@@ -1,10 +1,29 @@
 const mongoose = require('mongoose')
 const { MONGODB_URI } = require('../utils/config.js')
 
+mongoose.set('strictQuery', false)
+
+console.log('connecting to', MONGODB_URI)
+async function main() {
+    await mongoose.connect(MONGODB_URI)
+    console.log('connection opened')
+}
+main().catch(err => console.log('error happened during connection:', err))
+
 const blogSchema = mongoose.Schema({
-    title: String,
+    title: {
+        required: true,
+        type: String,
+    },
     author: String,
-    url: String,
+    url: {
+        required: true,
+        type: String,
+        // test for email
+        // validate: function(v) {
+        //     return /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v)
+        // },
+    },
     likes: Number,
 })
 
@@ -16,9 +35,4 @@ blogSchema.set('toJSON', {
     }
 })
 
-const Blog = mongoose.model('Blog', blogSchema)
-
-const mongoUrl = process.env.MONGODB_URI
-mongoose.connect(mongoUrl, { family: 4 })
-
-module.exports = Blog
+module.exports = mongoose.model('Blog', blogSchema)

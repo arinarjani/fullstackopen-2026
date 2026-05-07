@@ -14,16 +14,8 @@ beforeEach(async () => {
 
   // created notes in the db with helper.initialNotes
     await Note.insertMany(helper.initialNotes)
-
-//   let noteObject = new Note(helper.initialNotes[0])
-//   await noteObject.save()
-
-//   noteObject = new Note(helper.initialNotes[1])
-//   await noteObject.save()
 })
 
-// start with an empty db
-// Note.deleteMany({}).then(response => console.log(`deleted ${response.body === undefined ? 0 : response.body} notes from the db`))
 
 test('notes are returned as json', async () => {
   await api
@@ -106,8 +98,11 @@ test('a note can be deleted', async () => {
 
     // make sure the length of the db has changed -1
     assert.strictEqual(notesAtEnd.length, notesAtStart.length - 1)
+})
 
-    
+test('fails with statuscode 400 if note does not exist', async () => {
+    await api.get(`/api/notes/${123}`)
+             .expect(400)
 })
 
 after(async () => {
