@@ -1,12 +1,14 @@
 const notesRouter = require('express').Router()
-const Note = require('../modules/note.js')
+const Note = require('../models/note.js')
+const User = require('../models/user.js')
+const jwt = require('jsonwebtoken')
 
 // notesRouter.get('/', (req, res) => {
 //   res.send('<h1>stuff</h1>')
 // })
 
 notesRouter.get('/', async (req, res) => {
-  const allNotes = await Note.find({})
+  const allNotes = await Note.find({}).populate('user', {username: 1, name: 1})
   res.json(allNotes)
 })
 
@@ -25,22 +27,53 @@ notesRouter.get('/:id', async (req, res, next) => {
   }
 })
 
+// get the token from the header in the request
+const getTokenFrom = request => {
+  const authorization = request.get('authorization')
+  if (authorization && authorization.startsWith('Bearer ')) {
+    return authorization.replace('Bearer ', '')
+  }
+  return null
+}
+
 notesRouter.post('/', async (req, res, next) => {
   const body = req.body
-  
-    // build the note
-    const note = {
-      content: body.content,
-      important: body.important || false
-    }
 
-    // add the note to the db
-    try {
-      const savedNote = await Note.create(note)
-      res.status(201).json(savedNote)
-    } catch (error) {
-      next(error)
-    }
+  // decode the token returned from getTokenFrom function with jwt
+  const decodedToken = jwt.verify(getTokenFrom(req), process.env.SECRET)
+
+  // if the token doesn't return an object with a key of 'id', then return 401
+  if (!decodedToken.id) {
+    return response.status(401).json({ error: 'token invalid' })
+  }
+
+  // find the user who belongs to the creator of the note
+  const user = await User.findById(decodedToken.id)
+
+  if (!user) {
+    return response.status(400).json({ error: 'userId missing or not valid' })
+  }
+  
+  // build the note and include the user who created it
+  const note = {
+    content: body.content,
+    important: body.important || false,
+    user: user._id
+  }
+
+  // add the note to the db
+  try {
+    // save the note to the db
+    const savedNote = await Note.create(note)
+
+    // add the note to the user and save
+    user.notes = user.notes.concat(savedNote._id)
+    await user.save()
+
+    res.status(201).json(savedNote)
+  } catch (error) {
+    next(error)
+  }
 
 })
 

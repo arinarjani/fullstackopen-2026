@@ -43,7 +43,7 @@ GET http://localhost:3001/api/blogs/69f
 
 ###
 
-DELETE http://localhost:3001/api/blogs/69fceecf0750adea8ce53143
+DELETE http://localhost:3001/api/blogs/6a0f51c4d62d87b769140e07
 
 ###
 
@@ -66,3 +66,68 @@ Content-Type: application/json
     "content": "I cannot wait to mess with the new course",
     "important": false
 }
+
+###
+
+POST http://localhost:3001/api/users http/1.1
+Content-Type: application/json
+
+{
+    "username": "roo",
+    "name": "ro",
+    "password": "roo"
+}
+
+###
+
+POST http://localhost:3001/api/users http/1.1
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "root",
+    "password": "root"
+}
+
+###
+
+POST http://localhost:3001/api/login http/1.1
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "root"
+}
+
+###
+
+# POST http://localhost:3001/api/blogs http/1.1
+# Content-Type: application/json
+
+# {
+#     "title": "root",
+#     "author": "root",
+#     "url": "eric_s.com",
+#     "likes": 4,
+#     "userId": "6a0f3216683b45dba257355c"
+# }
+
+###
+GET http://localhost:3001/api/users
+
+###
+POST http://localhost:3001/api/blogs
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjZhMGY1YzE1MWQyZDUzYTZmN2E0OGVjZSIsImlhdCI6MTc3OTM5MTUxM30.8PvQ86Ts9sB-7NPQRU4AVwFzj8fEfY1HRFcQYIdMIGQ
+
+{
+    "title": "root",
+    "author": "root",
+    "url": "eric_s.com",
+    "likes": 4
+}
+
+###
+
+DELETE http://localhost:3001/api/blogs/6a0f5c3d1d2d53a6f7a48ecf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjZhMGY1YzE1MWQyZDUzYTZmN2E0OGVjZSIsImlhdCI6MTc3OTM5MTUxM30.8PvQ86Ts9sB-7NPQRU4AVwFzj8fEfY1HRFcQYIdMIGQ

@@ -16,8 +16,20 @@ POST http://localhost:3001/api/notes http/1.1
 Content-Type: application/json
 
 {
-    "content": "I am",
-    "important": true
+    "content": "I cannot wait to learn a SQL database instead of MongoDB, which isn't used in the industry",
+    "important": true,
+    "userId": "6a0e3f4c1373cd692b170aa2"
+}
+
+###
+
+POST http://localhost:3001/api/users http/1.1
+Content-Type: application/json
+
+{
+    "username": "arin",
+    "name": "arin",
+    "password": "arin"
 }
 
 ###
@@ -49,5 +61,51 @@ Content-Type: application/json
 
 {
     "content": "I cannot wait to mess with the new course",
+    "important": false
+}
+
+###
+
+POST http://localhost:3001/api/users http/1.1
+Content-Type: application/json
+
+{
+    "username": "root",
+    "name": "root",
+    "password": "root"
+}
+
+###
+
+POST http://localhost:3001/api/users http/1.1
+Content-Type: application/json
+
+{
+    "username": "arin",
+    "name": "root",
+    "password": "root"
+}
+
+###
+
+GET http://localhost:3001/api/users http/1.1
+
+###
+
+POST http://localhost:3001/api/login http/1.1
+Content-Type: application/json
+
+{
+    "username": "root",
+    "password": "root"
+}
+
+###
+POST http://localhost:3001/api/notes 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjZhMGUzZjRjMTM3M2NkNjkyYjE3MGFhMiIsImlhdCI6MTc3OTMyOTMwMX0.mN1a5xrG534CbeWXUDIIn4aRGz0FOtog6PebAggd7qM
+
+{
+    "content": "user 'root' adding a new note",
     "important": false
 }

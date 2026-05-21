@@ -1,21 +1,14 @@
 const mongoose = require('mongoose')
-const { MONGODB_URI } = require('../utils/config.js')
-
-mongoose.set('strictQuery', false)
-
-console.log('connecting to', MONGODB_URI)
-async function main() {
-    await mongoose.connect(MONGODB_URI)
-    console.log('connection opened')
-}
-main().catch(err => console.log('error happened during connection:', err))
 
 const blogSchema = mongoose.Schema({
     title: {
         required: true,
         type: String,
     },
-    author: String,
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User'
+    },
     url: {
         required: true,
         type: String,

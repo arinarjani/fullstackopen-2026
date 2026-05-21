@@ -1,7 +1,7 @@
 const { test, after, beforeEach } = require('node:test')
 const assert = require('node:assert')
 const mongoose = require('mongoose')
-const Note = require('../modules/note.js')
+const Note = require('../models/note.js')
 const helper = require('./test_helper.js')
 const supertest = require('supertest')
 const app = require('../app')

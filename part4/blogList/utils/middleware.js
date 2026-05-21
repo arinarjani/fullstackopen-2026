@@ -1,12 +1,66 @@
 require('dotenv').config()
+const jwt = require('jsonwebtoken')
 
-const showData = (req,res, next) => {
+const showData = (request,response, next) => {
     if (process.env.NODE_ENV !== 'test') {
-        console.log('URL --', req.url)
-        console.log('Method --', req.method)
-        console.log('Body --', req.body)
+        console.log('URL --', request.url)
+        console.log('Method --', request.method)
+        console.log('Body --', request.body)
     }
     next()
 }
 
-module.exports = showData
+const errorHandler = (error, request, response, next) => {
+  logger.error(error.message)
+
+  if (error.name === 'CastError') {
+    return response.status(400).send({ error: 'malformatted id' })
+  } else if (error.name === 'ValidationError') {
+    return response.status(400).json({ error: error.message })
+  } else if (error.name === 'MongoServerError' && error.message.includes('E11000 duplicate key error')) {
+    return response.status(400).json({ error: 'expected `username` to be unique' })
+  } else if (error.name === 'JsonWebTokenError') {
+    return response.status(401).json({ error: 'token invalid' })
+  } else if (error.name === 'TokenExpiredError') {
+    return response.status(401).json({
+      error: 'token expired'
+    })
+  }
+
+  next(error)
+}
+
+const tokenExtractor = async (request, response, next) => {
+  // get the authorization header from request
+  const authorization = request.get('authorization')
+
+  // if the header exists, then set request.token to the jwt token assigned in 
+  // ../controllers/login.js; remove the 'Bearer '
+  if (authorization && authorization.startsWith('Bearer ')) {
+    request.token = authorization.replace('Bearer ', '')
+  }
+
+  next()
+}
+
+const UserExtractor = async (request, response, next) => {
+  // extract user from request.token with jwt and assign it to request.user
+  request.user  = jwt.verify(request.token, process.env.SECRET)
+
+  next()
+}
+
+// const errorHandler = (error, request, response, next) => {
+//     if (error.name === 'ValidationError') {
+//         return response.status(400).json({error: error.message})
+//     }
+
+//     next(error)
+// }
+
+module.exports = {
+    showData,
+    errorHandler,
+    tokenExtractor,
+    UserExtractor
+}
