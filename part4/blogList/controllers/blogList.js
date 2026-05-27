@@ -35,6 +35,15 @@ blogListRouter.post('/', async (request, response, next) => {
       author: user._id
     }
 
+    // try {
+    //   // save the blog to the db
+    //   const createdBlog = await Blog.create(newBlog)
+
+    //   // save the createdBlog to the user who created it in the db
+    //   user.blogs = user.blogs.concat(createdBlog)
+    //   await user.save()
+
+    //   response.status(201).json(createdBlog._id)
     try {
       // save the blog to the db
       const createdBlog = await Blog.create(newBlog)
@@ -43,7 +52,9 @@ blogListRouter.post('/', async (request, response, next) => {
       user.blogs = user.blogs.concat(createdBlog)
       await user.save()
 
-      response.status(201).json(createdBlog._id)
+      const populatedBlog = await Blog.findById(createdBlog._id).populate('author', {username: 1, name: 1})
+
+      response.status(201).json(populatedBlog)
     } catch (error) {
       next(error)
     }

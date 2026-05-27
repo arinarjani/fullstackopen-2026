@@ -45,7 +45,9 @@ const tokenExtractor = async (request, response, next) => {
 
 const UserExtractor = async (request, response, next) => {
   // extract user from request.token with jwt and assign it to request.user
-  request.user  = jwt.verify(request.token, process.env.SECRET)
+  if (request.token) {
+    request.user  = jwt.verify(request.token, process.env.SECRET)
+  }
 
   next()
 }
