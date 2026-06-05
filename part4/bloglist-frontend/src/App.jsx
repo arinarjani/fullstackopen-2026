@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import Login from './components/Login'
 import Notification from './components/Notification'
+import Togglable from './components/Togglable'
+import BlogForm from './components/BlogForm'
 import blogService from './services/blogs'
 import login from './services/login'
 
@@ -10,15 +12,12 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
-  const [likes, setLikes] = useState(0)
   const [message, setMessage] = useState('')
+
+  const blogFromRef = useRef()
 
   useEffect(() => {
       blogService.getAll().then(blogs => {
-        // console.log(blogs)
         setBlogs(blogs)
       })
   }, [])
@@ -68,33 +67,54 @@ const App = () => {
 
   }
 
-  const handleAddBlog = async ( e ) => {
-    e.preventDefault()
-
+  const handleAddBlog = async (blog) => {
     try {
-      // create the a new blog
-      const newBlog = {
-        title,
-        author,
-        url,
-        likes
-      }
+      // add blog do the db
+      const createdBlog = await blogService.addBlog(blog)
   
-      // add the blog to the db
-      const createdBlog = await blogService.addBlog(newBlog)
+      // add createdBlog to the blogs state
+      setBlogs(oldBlog => oldBlog.concat(createdBlog))
   
-      console.log(createdBlog)
-  
-      // conact new blog to the blogs state
-      setBlogs(oldblogs => oldblogs.concat(createdBlog))
-
       // show message of success
       setMessage(`${createdBlog.title} added!!!`)
       setTimeout(() => setMessage(''), 5000)
+  
+      // hide the 'create new blog' form
+      blogFromRef.current.toggleVisible()
     } catch (error) {
       setMessage(error)
       setTimeout(() => setMessage(''), 5000)
     }
+
+  }
+
+  const handleIncreaseLikes = async ( blog ) => {
+    await blogService.increaseLikes( blog)
+
+    // erase blogs state and populate it with the blogs in the db
+    const allBlogs = await blogService.getAll()
+    setBlogs(allBlogs)
+
+    // I thought this would erase the delay in the updating on the 
+    // front-end, but I think it's the server issue causing the delay
+    // const s = blogs.map(blog => {
+    //   if ( blog.id === response.id ) {
+    //     return { ...blog, likes: blog.likes + 1 }
+    //   }
+    //   return blog
+    // })
+
+    // setBlogs(s)
+
+  }
+
+  const handleDelete = async ( blog ) => {
+    // delete blog
+    await blogService.deleteBlog( blog )
+
+    // erase blogs state and populate it with the blogs in the db
+    const allBlogs = await blogService.getAll()
+    setBlogs(allBlogs)
   }
 
   const handleLogout = () => {
@@ -124,7 +144,7 @@ const App = () => {
         {
           !user 
           &&
-          <Login data={{handleLogin, username, password, setPassword, setUsername}} />
+          <Login loginFormData={{handleLogin, username, password, setPassword, setUsername}} />
         }
 
         {
@@ -132,28 +152,12 @@ const App = () => {
         <div>
           <h3>{user.name} is logged in</h3> <button onClick={handleLogout}>logout</button>
           <h2>blogs</h2>
-          {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+          {blogs.sort((a,b) => a.likes - b.likes).map(blog =>
+            <Blog key={blog.id} blog={blog} handleIncreaseLikes={handleIncreaseLikes} handleDelete={handleDelete} />
           )}
-          <form onSubmit={handleAddBlog}>
-            <label htmlFor="title">
-              title: 
-              <input type="text" name="title"  value={title} onChange={(e) => setTitle(e.target.value)}/>
-            </label>
-            <label htmlFor="author">
-              author: 
-              <input type="text" name="author" value={author} onChange={(e) => setAuthor(e.target.value)}/>
-            </label>
-            <label htmlFor="url">
-              url: 
-              <input type="text" name="url" value={url} onChange={(e) => setUrl(e.target.value)}/>
-            </label>
-            <label htmlFor="likes">
-              likes: 
-              <input type="number" name="title" value={likes} onChange={(e) => setLikes(e.target.value)}/>
-            </label>
-            <button>add</button>
-          </form>
+          <Togglable buttonLabel={'create new blog'} ref={blogFromRef}>
+            <BlogForm createBlog={handleAddBlog} />
+          </Togglable>
         </div>
         }
       </div>

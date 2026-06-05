@@ -1,5 +1,5 @@
-const Login = ({ data }) => {
-    const { handleLogin, username, password, setPassword, setUsername } = data
+const Login = ({ loginFormData }) => {
+    const { handleLogin, username, password, setPassword, setUsername } = loginFormData
 
     return (
         <form onSubmit={handleLogin}>

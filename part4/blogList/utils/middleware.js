@@ -11,6 +11,8 @@ const showData = (request,response, next) => {
 }
 
 const errorHandler = (error, request, response, next) => {
+  console.log('inside the errorHandler')
+
   logger.error(error.message)
 
   if (error.name === 'CastError') {

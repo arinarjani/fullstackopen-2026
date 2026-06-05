@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const blogListRouter = require('express').Router()
+const blogList = require('../modules/blogList.js')
 const Blog = require('../modules/blogList.js')
 const User = require('../modules/user.js')
 const jwt = require('jsonwebtoken')
@@ -35,15 +36,6 @@ blogListRouter.post('/', async (request, response, next) => {
       author: user._id
     }
 
-    // try {
-    //   // save the blog to the db
-    //   const createdBlog = await Blog.create(newBlog)
-
-    //   // save the createdBlog to the user who created it in the db
-    //   user.blogs = user.blogs.concat(createdBlog)
-    //   await user.save()
-
-    //   response.status(201).json(createdBlog._id)
     try {
       // save the blog to the db
       const createdBlog = await Blog.create(newBlog)
@@ -76,10 +68,6 @@ blogListRouter.delete('/:id', async (request, response, next) => {
     // get the blog to delete based on request.params.id (the url id)
     const blogToDelete = await Blog.findById(request.params.id)
 
-    // console.log('user._id', user._id.toJSON())
-    // console.log('blogToDelete.author._id', blogToDelete.author._id.toJSON())
-    // console.log(blogToDelete.author._id.toJSON() === user._id.toJSON())
-
     if (blogToDelete.author._id.toJSON() === user._id.toJSON()) {
       try {
         // delete the blog
@@ -94,23 +82,25 @@ blogListRouter.delete('/:id', async (request, response, next) => {
         next(error)
       }
     }
-
-    // try {
-    //   const deletedBlog = await Blog.findByIdAndDelete(request.params.id)
-    //   response.status(200).end()
-    // } catch (error) {
-    //   next(error)
-    // }
 })
 
 blogListRouter.put('/:id', async (request, response, next) => {
     try {
-        const id = request.params.id
-        const body = request.body
 
-        const updatedBlog = await Blog.findByIdAndUpdate(id, body)
+      // grab the request.id param and request.body
+      const body = request.body
+      const id = request.params.id
+      
+      // find the user that matches the userId from decodedToken
+      const user = await User.findById(request.user.id)
 
-        response.status(200).end()
+      if (!user) {
+        return response.status(401).json({error: 'userId missing or invalid user'})
+      }
+
+      const updatedBlog = await Blog.findByIdAndUpdate(id, {...body, author: user._id})
+
+      response.status(200).end()
     } catch (error) {
         next(error)
     }
