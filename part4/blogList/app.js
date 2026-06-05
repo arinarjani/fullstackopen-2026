@@ -17,7 +17,7 @@ async function main() {
 }
 main().catch(err => console.log('error happened during connection:', err))
 
-// app.use(express.static('dist'))
+app.use(express.static('dist'))
 app.use(express.json())
 app.use(showData)
 app.use(errorHandler)
