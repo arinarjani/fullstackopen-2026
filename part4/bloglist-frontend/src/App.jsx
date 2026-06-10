@@ -17,9 +17,9 @@ const App = () => {
   const blogFromRef = useRef()
 
   useEffect(() => {
-      blogService.getAll().then(blogs => {
-        setBlogs(blogs)
-      })
+    blogService.getAll().then(blogs => {
+      setBlogs(blogs)
+    })
   }, [])
 
   useEffect(() => {
@@ -41,17 +41,17 @@ const App = () => {
 
     try {
       // log into the server
-      const returnedUser = await login({username, password})
-      
+      const returnedUser = await login({ username, password })
+
       // set the user to the returned user after loggin in
       setUser(returnedUser)
-  
+
       // set localStorage with user
       window.localStorage.setItem('blogUser', JSON.stringify(returnedUser))
-  
+
       // set token from returnedUser
       blogService.setToken(returnedUser.token)
-      
+
       // set the input text fields to ''
       setUsername('')
       setPassword('')
@@ -59,7 +59,7 @@ const App = () => {
       // show message of success
       setMessage(`${returnedUser.name} logged in!!!`)
       setTimeout(() => setMessage(''), 5000)
-      
+
     } catch (error) {
       setMessage(error)
       setTimeout(() => setMessage(''), 5000)
@@ -71,14 +71,14 @@ const App = () => {
     try {
       // add blog do the db
       const createdBlog = await blogService.addBlog(blog)
-  
+
       // add createdBlog to the blogs state
       setBlogs(oldBlog => oldBlog.concat(createdBlog))
-  
+
       // show message of success
       setMessage(`${createdBlog.title} added!!!`)
       setTimeout(() => setMessage(''), 5000)
-  
+
       // hide the 'create new blog' form
       blogFromRef.current.toggleVisible()
     } catch (error) {
@@ -89,13 +89,13 @@ const App = () => {
   }
 
   const handleIncreaseLikes = async ( blog ) => {
-    await blogService.increaseLikes( blog)
+    await blogService.increaseLikes( blog )
 
     // erase blogs state and populate it with the blogs in the db
     const allBlogs = await blogService.getAll()
     setBlogs(allBlogs)
 
-    // I thought this would erase the delay in the updating on the 
+    // I thought this would erase the delay in the updating on the
     // front-end, but I think it's the server issue causing the delay
     // const s = blogs.map(blog => {
     //   if ( blog.id === response.id ) {
@@ -121,15 +121,15 @@ const App = () => {
     try {
       // clear localStorage
       window.localStorage.clear()
-  
+
       // delete user
       setUser(null)
-  
+
       // delete token
       blogService.setToken(null)
 
       // show message of success
-      setMessage(`You are logged out!!!`)
+      setMessage('You are logged out!!!')
       setTimeout(() => setMessage(''), 5000)
     } catch (error) {
       setMessage(error)
@@ -142,9 +142,9 @@ const App = () => {
       {message.length > 0 && <Notification message={message} />}
       <div>
         {
-          !user 
+          !user
           &&
-          <Login loginFormData={{handleLogin, username, password, setPassword, setUsername}} />
+          <Login loginFormData={{ handleLogin, username, password, setPassword, setUsername }} />
         }
 
         {

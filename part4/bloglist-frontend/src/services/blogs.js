@@ -14,7 +14,7 @@ const getAll = async () => {
 
 const addBlog = async ( blog ) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
 
   const response = await axios.post(baseUrl, blog, config)
@@ -24,15 +24,15 @@ const addBlog = async ( blog ) => {
 const increaseLikes = async ( blog ) => {
 
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
 
-  await axios.put(`${baseUrl}/${blog.id}`, {...blog, likes: blog.likes + 1}, config)
+  await axios.put(`${baseUrl}/${blog.id}`, { ...blog, likes: blog.likes + 1 }, config)
 }
 
 const deleteBlog = async ( blog ) => {
   const config = {
-    headers: {Authorization: token}
+    headers: { Authorization: token }
   }
 
   await axios.delete(`${baseUrl}/${blog.id}`, config)
