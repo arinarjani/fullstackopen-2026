@@ -15,10 +15,10 @@ const Blog = ({ blog, handleIncreaseLikes, handleDelete }) => {
   return (
     <div>
       <p>{blog.title} <button onClick={() => setVisible(!visible)}>{visible ? 'hide' : 'view'}</button></p>
-      <p>author: {blog.author.name}</p> {/* move this under likes when not testing */}
       <div style={show}>
         <p>url: {blog.url}</p>
         <p>likes: {blog.likes} <button onClick={() => handleIncreaseLikes(blog)}>like</button></p>
+        <p>author: {blog.author.name}</p> {/* move this under likes when not testing, or under title when testing */}
         <button onClick={() => window.confirm(`Do you want to delete ${blog.title}?`) ? handleDelete(blog) : null}>delete</button>
       </div>
     </div>
