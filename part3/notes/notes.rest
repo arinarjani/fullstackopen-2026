@@ -101,6 +101,16 @@ Content-Type: application/json
 }
 
 ###
+
+POST http://localhost:3001/api/login http/1.1
+Content-Type: application/json
+
+{
+    "username": "arin",
+    "password": "arin"
+}
+
+###
 POST http://localhost:3001/api/notes 
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb3QiLCJpZCI6IjZhMGUzZjRjMTM3M2NkNjkyYjE3MGFhMiIsImlhdCI6MTc3OTMyOTMwMX0.mN1a5xrG534CbeWXUDIIn4aRGz0FOtog6PebAggd7qM
@@ -109,3 +119,6 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InJvb
     "content": "user 'root' adding a new note",
     "important": false
 }
+
+###
+POST http://localhost:3001/api/testing/reset

@@ -73,10 +73,13 @@ export default defineConfig({
 
   /* Run your local dev server before starting the tests */
   // webServer: {
-  //   command: 'npm run start',
-  //   url: 'http://localhost:3000',
+  //   command: 'cd ../part3/notes npm run start:test',
+  //   url: 'http://localhost:3001',
+  //   name: 'backend',
   //   reuseExistingServer: !process.env.CI,
   // },
   timeout: 3000,
+  fullyParallel: false,
+  workers: 1,
 });
 

@@ -19,7 +19,20 @@ import { test, expect, describe, beforeEach } from '@playwright/test';
 // });
 
 describe('Note App',() => {
-  beforeEach(async({ page }) => {
+  beforeEach(async ({ page, request }) => {
+    // delete all users from DB
+    await request.post('http://localhost:3001/api/testing/reset')
+
+    // create a user for the db
+    await request.post('http://localhost:3001/api/users', {
+      data: {
+        name: 'root',
+        username: 'root',
+        password: 'root'
+      }
+    })
+
+    // go to the home page for each test
     await page.goto('http://localhost:3001')
   })
 
@@ -41,14 +54,14 @@ describe('Note App',() => {
     // once the login form is visible, input the username and password
     // await page.getByRole('textbox').first().fill('arin')
     // await page.getByRole('textbox').last().fill('arin')
-    await page.getByLabel('username').fill('arin')
-    await page.getByLabel('password').fill('arin')
+    await page.getByLabel('username').fill('root')
+    await page.getByLabel('password').fill('root')
 
     // find the login button
     await page.getByRole('button', { name: 'login' }).click()
 
     // get element showing who is logged in
-    await expect(page.getByText('arin logged in')).toBeVisible()
+    await expect(page.getByText('root logged in')).toBeVisible()
   })
 
   describe('when logged in', () => {
@@ -57,14 +70,14 @@ describe('Note App',() => {
       await page.getByRole('button', { name: 'login' }).click()
 
       // enter user and password into the two inputs
-      await page.getByLabel('username').fill('arin')
-      await page.getByLabel('password').fill('arin')
+      await page.getByLabel('username').fill('root')
+      await page.getByLabel('password').fill('root')
 
       // click the login button
       await page.getByRole('button', { name: 'login' }).click()
     })
 
-    test('user can add note once logged in. arin:arin', async ({ page }) => {
+    test('user can add note once logged in. root:root', async ({ page }) => {
       // click the new note button
       await page.getByRole('button', { name: 'new note' }).click()
 

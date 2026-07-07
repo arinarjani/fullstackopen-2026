@@ -6,6 +6,7 @@ const middleware = require('./utils/middleware')
 const notesRouter = require('./controllers/notes.js')
 const usersRouter = require('./controllers/users.js')
 const loginRouter = require('./controllers/login.js')
+// const testingRouter = require('./controllers/testing.js')
 
 const app = express()
 
@@ -15,7 +16,7 @@ logger.info('connecting to', config.MONGODB_URI)
 
 async function main() {
     await mongoose.connect(config.MONGODB_URI)
-    logger.info('connected to MongoDB')
+    logger.info('connected to MongoDB')  
 }
 main().catch(error => logger.error('error connection to MongoDB:', error.message))
 
@@ -26,6 +27,7 @@ app.use(middleware.requestLogger)
 app.use('/api/notes', notesRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
+// app.use('/api/testing', testingRouter)
 
 if (process.env.NODE_ENV === 'testing') {
   const router = require('./controllers/testing')
