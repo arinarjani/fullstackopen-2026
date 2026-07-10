@@ -34,6 +34,8 @@ if (process.env.NODE_ENV === 'testing') {
   app.use('/api/testing', router)
 }
 
+// testing stuff for sureeeeeee
+
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
 
