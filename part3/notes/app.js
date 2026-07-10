@@ -29,12 +29,10 @@ app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
 // app.use('/api/testing', testingRouter)
 
-if (process.env.NODE_ENV === 'testing') {
-  const router = require('./controllers/testing')
-  app.use('/api/testing', router)
+if (process.env.NODE_ENV === 'test') {
+  const testingRouter = require('./controllers/testing')
+  app.use('/api/testing', testingRouter)
 }
-
-// testing stuff for sureeeeeee
 
 app.use(middleware.unknownEndpoint)
 app.use(middleware.errorHandler)
